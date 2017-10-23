@@ -12,16 +12,26 @@ def addSimple(desc, amount):
 	}
 
 def reportCategory(json):
-	pass
+	def setCat(dic):
+		dic["category"] = getDefaultCategory(dic["desc"])
+		return dic
+	return map(lambda n:setCat(n), json)
 
 def getDefaultCategory(desc):
 	dic = {
 	"吃":[
 	r".*吃.*"
 	],
-	"学习":[],
-	"住":[],
-	"生活":[]
+	"学习":[
+	r".*书.*",
+	r".*学.*",
+	r".*笔.*"
+	],
+	"住":[
+	r".*房.*"
+	],
+	"生活":[
+	]
 	}
 	
 	isMatch = lambda pattern:re.search(pattern, desc) != None
