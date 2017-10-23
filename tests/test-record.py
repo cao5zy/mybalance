@@ -14,3 +14,7 @@ def test_addSimple():
 def test_getDefaultCategory():
 	cat = record.getDefaultCategory('吃麦当劳')
 	assert_that(cat).is_equal_to('吃')
+
+def test_getDefaultCategory_default():
+	cat = record.getDefaultCategory('seredsfdfsdf sdf')
+	assert_that(cat).is_equal_to('other')
