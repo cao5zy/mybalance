@@ -11,6 +11,6 @@ def test_addSimple():
 	assert_that(result["date"]).is_equal_to(date.today())
 	assert_that(result["id"]).is_not_empty()
 
-# def test_getDefaultCategory():
-# 	cat = record.getDefaultCategory('吃麦当劳')
-# 	assert_that(cat).is_equal_to('吃')
+def test_getDefaultCategory():
+	cat = record.getDefaultCategory('吃麦当劳')
+	assert_that(cat).is_equal_to('吃')
