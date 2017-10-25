@@ -1,12 +1,16 @@
-from flask import Flask
+from flask import Flask, request
 import record
-import dbHelper
+import dbhelper
+import chardet
+import codecs
 
 app = Flask(__name__)
 
 @app.route('/<desc>/<amount>')
 def recordSingle(desc, amount):
-	dbHelper.insert(record.addSimple(desc, amount))
+	dbhelper.insert(record.addSimple(desc, amount))
+	return "OK"
+
 
 if __name__ == '__main__':
-	app.run()
+	app.run(debug=True)
