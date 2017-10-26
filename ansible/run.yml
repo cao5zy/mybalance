@@ -1,0 +1,21 @@
+---
+- name: build mybalance service
+  hosts: localhost
+  become: true
+  become_method: sudo
+
+  tasks:
+  - name: build and start the service
+    docker_container:
+      name: "mybalance-server"
+      image: "mybalance:latest"
+      volumes:
+      - "/home/caozy/mybalance:/home/mybalance:rw"
+      ports:
+      - 5000:5000
+      restart: yes
+      recreate: yes
+      state: started
+      entrypoint: python app.py
+
+...
