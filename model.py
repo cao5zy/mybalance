@@ -1,22 +1,23 @@
 from datetime import date
 
+# def buildKey(obj, keyName, val):
+# 	return obj if keyName in obj else buildOp(obj, lambda obj:obj[keyName]=val)
+
+def buildOp(obj, handler):
+	handler(obj)
+	return obj
+
 
 class Budget:
 	"""docstring for budget"""
 	def __init__(self, budgetObj):
 		def addIncome(amount, date = date.today(), title = "income", description = ""):
-			def init():
-				if "incomes" in budgetObj:
-					return budgetObj
-				else:
-					budgetObj["incomes"] = []
-					return budgetObj
-
-			def add():
-				init()["incomes"].append({"income": amount, "date": date, "desc": description, "title": title})
+			def add(obj):
+				budgetObj.update({"incomes": budgetObj["incomes"] + [obj] if "incomes" in budgetObj \
+					else [obj]})
 				return budgetObj
 
-			return add()
+			return add({"income": amount, "date": date, "desc": description, "title": title})
 
 		def addConsumption(account, amount, date = date.today(), title = "", description = ""): 
 			# 添加消费
