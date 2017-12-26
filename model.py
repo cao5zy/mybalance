@@ -1,4 +1,5 @@
 from datetime import date
+from itertools import groupby
 
 # def buildKey(obj, keyName, val):
 # 	return obj if keyName in obj else buildOp(obj, lambda obj:obj[keyName]=val)
@@ -15,6 +16,8 @@ class Budget:
 			budgetObj.update({name: budgetObj[name] + [obj] if name in budgetObj \
 				else [obj]})
 			return budgetObj
+		def getWithDefault(name, defaultVal = []):
+			return budgetObj[name] if name in budgetObj else defaultVal
 
 		def addIncome(amount, date = date.today(), title = "income", description = ""):
 			return addObj("incomes", {"income": amount, "date": date, "desc": description, "title": title})
@@ -27,20 +30,21 @@ class Budget:
 			return addObj("budgets", {"account": account, "amount": amount})
 
 		def getSumOfConsumption():
-			return sum(list(map(lambda obj:obj["consumption"], budgetObj["consumptions"] if "consumptions" in budgetObj else [])))
+			return sum(map(lambda obj:obj["consumption"], getWithDefault("consumptions")))
 
 		def getSumOfIncome():
-			return sum(list(map(lambda obj:obj["income"], budgetObj["incomes"] if "incomes" in budgetObj else [])))
+			return sum(map(lambda obj:obj["income"], getWithDefault("incomes")))
 
 		def getBalanceRemaining():
 			# 获取当前账期内的绝对余额
 			return getSumOfIncome() - getSumOfConsumption()
 
-		def getBudgetConsumption():
-			pass
-			
+		def getAccountConsumption():
+			return dict([(key, sum(map(lambda x:x["consumption"], group))) for key, group in groupby(getWithDefault("consumptions"), lambda x:x["account"])])
+
 		def getBalanceAccountRemaining():
 			# 获取账期内，扣除账户预算后的余额
+			getBudgetConsumption()
 			def getBudgetRemaining():
 				pass
 			pass
