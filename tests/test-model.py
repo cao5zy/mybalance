@@ -23,3 +23,14 @@ def test_getBalanceAccountRemaining():
 	buget.addConsumption(50, "candy")
 
 	assert_that(buget.getBalanceAccountRemaining()).is_equal_to(5500)
+
+def test_getBalanceAccountRemaining():
+	buget = Budget({})
+	buget.addIncome(8000)
+	buget.addBudget("candy", 500)
+	buget.addBudget("eating", 2000)
+	buget.addConsumption(50, "candy")
+	buget.addConsumption(500, "candy")
+	buget.addConsumption(500)
+
+	assert_that(buget.getBalanceAccountRemaining()).is_equal_to(4950)
