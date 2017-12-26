@@ -6,14 +6,20 @@ def test_addIncome():
 	assert_that(Budget({}).addIncome(8000)).contains_entry({"incomes":[{"income":8000, "title":"income", "desc":"", "date":date.today()}]})
 
 
-def test_addConsumption():
-	pass
-
-def test_addBudget():
-	pass
-
 def test_getBalanceRemaining():
-	pass
+	buget = Budget({})
+	buget.addIncome(8000)
+	buget.addBudget("candy", 500)
+	buget.addBudget("eating", 2000)
+	buget.addConsumption(50)
+
+	assert_that(buget.getBalanceRemaining()).is_equal_to(7950)
 
 def test_getBalanceAccountRemaining():
-	pass
+	buget = Budget({})
+	buget.addIncome(8000)
+	buget.addBudget("candy", 500)
+	buget.addBudget("eating", 2000)
+	buget.addConsumption(50, "candy")
+
+	assert_that(buget.getBalanceAccountRemaining()).is_equal_to(5500)

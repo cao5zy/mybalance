@@ -11,35 +11,45 @@ def buildOp(obj, handler):
 class Budget:
 	"""docstring for budget"""
 	def __init__(self, budgetObj):
+		def addObj(name, obj):
+			budgetObj.update({name: budgetObj[name] + [obj] if name in budgetObj \
+				else [obj]})
+			return budgetObj
+
 		def addIncome(amount, date = date.today(), title = "income", description = ""):
-			def add(obj):
-				budgetObj.update({"incomes": budgetObj["incomes"] + [obj] if "incomes" in budgetObj \
-					else [obj]})
-				return budgetObj
+			return addObj("incomes", {"income": amount, "date": date, "desc": description, "title": title})
 
-			return add({"income": amount, "date": date, "desc": description, "title": title})
-
-		def addConsumption(account, amount, date = date.today(), title = "", description = ""): 
-			# 添加消费
-			pass
+		def addConsumption(amount, account = "", date = date.today(), title = "", description = ""): 
+			return addObj("consumptions", {"consumption": amount, "account": account, "date": date, "desc": description, })			
 
 		def addBudget(account, amount): 
 			# 添加预算账户
-			pass
+			return addObj("budgets", {"account": account, "amount": amount})
+
+		def getSumOfConsumption():
+			return sum(list(map(lambda obj:obj["consumption"], budgetObj["consumptions"] if "consumptions" in budgetObj else [])))
+
+		def getSumOfIncome():
+			return sum(list(map(lambda obj:obj["income"], budgetObj["incomes"] if "incomes" in budgetObj else [])))
 
 		def getBalanceRemaining():
 			# 获取当前账期内的绝对余额
-			pass
+			return getSumOfIncome() - getSumOfConsumption()
 
+		def getBudgetConsumption():
+			pass
+			
 		def getBalanceAccountRemaining():
 			# 获取账期内，扣除账户预算后的余额
+			def getBudgetRemaining():
+				pass
 			pass
 
-		self.addConsumption = None;
-		self.addBudget = None;
-		self.getBalanceRemaining = None;
-		self.getBalanceAccountRemaining = None;
-		self.addIncome = addIncome;
+		self.addConsumption = addConsumption
+		self.addBudget = addBudget
+		self.getBalanceRemaining = getBalanceRemaining
+		self.getBalanceAccountRemaining = getBalanceAccountRemaining
+		self.addIncome = addIncome
 
 
 def getAccountUsage(budgetId):
