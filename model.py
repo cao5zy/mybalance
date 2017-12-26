@@ -42,9 +42,14 @@ class Budget:
 		def getAccountConsumption():
 			return dict([(key, sum(map(lambda x:x["consumption"], group))) for key, group in groupby(getWithDefault("consumptions"), lambda x:x["account"])])
 
+		def getAccountBudget():
+			return dict([(key, sum(map(lambda x:x["amount"], group))) for key, group in groupby(getWithDefault("budgets"), lambda x:x["account"])])
+
 		def getBalanceAccountRemaining():
 			# 获取账期内，扣除账户预算后的余额
-			getBudgetConsumption()
+			print(getAccountConsumption())
+			print(getAccountBudget())
+
 			def getBudgetRemaining():
 				pass
 			pass
