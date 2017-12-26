@@ -47,12 +47,18 @@ class Budget:
 
 		def getBalanceAccountRemaining():
 			# 获取账期内，扣除账户预算后的余额
-			print(getAccountConsumption())
-			print(getAccountBudget())
+			def getBudgetRemaining(accBudget, accCon):
+				getRemaining = lambda key: accBudget[key] - accCon[key] if accBudget[key] - accCon[key] > 0 else 0
+				return accBudget.update(dict(map(lambda key:(key, getRemaining(key)), \
+				filter(lambda key:key in accCon, [key for key in accCon])))) or accBudget
 
-			def getBudgetRemaining():
-				pass
-			pass
+			def getSumOfBudgetRemaining(budgetRemaining):
+				return sum(map(lambda key:budgetRemaining[key], budgetRemaining))
+
+			return getSumOfIncome() \
+				- getSumOfConsumption() \
+				- getSumOfBudgetRemaining(getBudgetRemaining(getAccountBudget(), getAccountConsumption()))
+
 
 		self.addConsumption = addConsumption
 		self.addBudget = addBudget
