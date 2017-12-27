@@ -68,6 +68,7 @@ class Budget:
 		self.getBalanceRemaining = getBalanceRemaining
 		self.getBalanceAccountRemaining = getBalanceAccountRemaining
 		self.addIncome = addIncome
+		self.getObj = lambda:budgetObj
 
 
 def getAccountUsage(budgetId):
