@@ -1,4 +1,4 @@
-from model import Budget
+from Budget import Budget
 from assertpy import assert_that
 from datetime import date
 
