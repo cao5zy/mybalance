@@ -14,21 +14,21 @@ class BudgetManagement:
 		self.conn = MongoClient("mongodb://localhost", 27017)
 		self.db = self.conn.testdb
 
-		def newBudget():
-			self.db["budgets"].insert_many([{"number": 1, "data": {"bds":[{"name": "KFC"}]}}])
+		def newBalance():
+			self.db["Balances"].insert_many([{"number": 1, "data": {"bds":[{"name": "KFC"}]}}])
 
 			# generate a new balance with name number-date.json
 			pass
 
-		def currentBudget():
-			print(loadAllBudgetsFileName())
+		def currentBalance():
+			print(loadAllBalancesFileName())
 			# if the folder is empty, return None
 			pass
 
-		def historyBudgets():
+		def historyBalances():
 			pass
 
-		def loadAllBudgetsFileName():
+		def loadAllBalancesFileName():
 			pass
 
 		def getFileNameParts(fileName):
@@ -42,6 +42,6 @@ class BudgetManagement:
 		def getDateOfFileName(fileName):
 			pass
 
-		self.newBudget = newBudget
-		self.currentBudget = currentBudget
-		self.historyBudgets = historyBudgets
+		self.newBalance = newBalance
+		self.currentBalance = currentBalance
+		self.historyBalances = historyBalances
