@@ -8,4 +8,6 @@ def test_currentBudget():
 def test_currentKey():
 	budgetManagement = BudgetManagement()
 
-	assert_that(budgetManagement.currentKey()).is_equal_to(0)
+	result = budgetManagement.currentKey()
+
+	assert_that(budgetManagement.setCurrentKey(result["order"] + 1)["order"]).is_equal_to(result["order"] + 1)

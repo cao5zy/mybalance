@@ -36,14 +36,20 @@ class BudgetManagement:
 			key = fields.CharField(min_length = 1, max_length = 50, primary_key = True, required = True)
 
 		class Key(MongoModel):
-			name = fields.CharField(min_length = 1, max_length = 20, primary_key = True)
+			name = fields.CharField(min_length = 1, max_length = 20, primary_key = True, verbose_name = "name")
 			order = fields.IntegerField()
 		# schema definition
 
-		def currentKey(default="default"):
-			return (lambda result: 0 if result.count() == 0 else result[0].order)(Key.objects.raw({"name": default}))
-		def currentkey():
-			pass
+		def currentKey(name = "default"):
+			return {
+				"name": name,
+				"order": (lambda result: 0 if result.count() == 0 else result[0].order)(Key.objects.raw({"_id": name}))
+			}
+
+		def setCurrentKey(newValue, name = "default"):
+			Key(name = name, order = newValue).save()
+
+			return currentKey(name)
 
 		def currentBalance():
 			pass
@@ -83,3 +89,4 @@ class BudgetManagement:
 		self.currentBalance = currentBalance
 		self.historyBalances = historyBalances
 		self.currentKey = currentKey
+		self.setCurrentKey = setCurrentKey
