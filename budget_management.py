@@ -4,57 +4,44 @@ from pymongo import MongoClient
 from datetime import date
 
 # schema defintion
-from mongorm import Field, Database
-db = Database(uri='mongodb://localhost:27017/testdb')
 
-class MyBalance(db.Document):
-	__collection__ = "MyBalances"
-	__fields__ = {
-		"incomes": [{
-			"income": Field.required(float),
-			"date": Field.required(date),
-			"desc": Field.optional(str),
-			"title": Field.required(str)
-		}],
-		"budgets": [{
-			"account": Field.required(str),
-			"amount": Field.required(float)
-		}],
-		"consumptions": [{
-			"consumption": Field.required(str),
-			"account": Field.required(str),
-			"date": Field.required(date),
-			"desc": Field.optional(str)
-		}],
-		"key": Field.required(int)
-	}
 
-class Key(db.Document):
-	__collection__ = "Keys"
-	__fields__ = {
-		"name": Field.required(str),
-		"order": Field.required(int)
-	}
 
 
 class BudgetManagement:
-	def __enter__(self):
-		return self
-
-	def __exit__(self, e_t, e_v, t_b):
-		self.conn.close()
-
 	def __init__(self):
-		self.conn = MongoClient("mongodb://localhost", 27017)
-		db = self.conn.testdb
+		from pymodm import connect, MongoModel, fields
+		connect('mongodb://localhost:27017/testdb')
+
+		class Income(MongoModel):
+			income = fields.FloatField()
+			desc = fields.CharField(min_length=0, max_length=255)
+			date = fields.DateTimeField()
+			title = fields.CharField(min_length=1, max_length=50)
+
+		class Consumption(MongoModel):
+			consumption = fields.FloatField()
+			account = fields.CharField(min_length=1, max_length=125)
+			date = fields.DateTimeField()
+			desc = fields.CharField(min_length = 0, max_length=125)
+
+		class Budget(MongoModel):
+			account = fields.CharField(min_length = 1, max_length = 125)
+			amount = fields.FloatField()
+
+		class Balance(MongoModel):
+			incomes = fields.EmbeddedDocumentListField(Income)
+			consumptions = fields.EmbeddedDocumentListField(Consumption)
+			bugdets = fields.EmbeddedDocumentListField(Budget)
+			key = fields.CharField(min_length = 1, max_length = 50, primary_key = True, required = True)
+
+		class Key(MongoModel):
+			name = fields.CharField(min_length = 1, max_length = 20, primary_key = True)
+			order = fields.IntegerField()
+		# schema definition
 
 		def currentKey(default="default"):
-			def findKey(col):
-				print(col)
-				print(col.count())
-				return 0 if not col else col.find({name: default}).value
-			return findKey(db["keys"])
-
+			return (lambda result: 0 if result.count() == 0 else result[0].order)(Key.objects.raw({"name": default}))
 		def currentkey():
 			pass
 
@@ -65,7 +52,7 @@ class BudgetManagement:
 			pass
 
 		def newBalance():
-			db["Balances"].insert_many([{"number": 1, "data": {"bds":[{"name": "KFC"}]}}])
+			#db["Balances"].insert_many([{"number": 1, "data": {"bds":[{"name": "KFC"}]}}])
 
 			# generate a new balance with name number-date.json
 			pass
