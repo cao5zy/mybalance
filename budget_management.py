@@ -79,23 +79,12 @@ class BudgetManagement:
 			return (lambda result:None if result.count() == 0 else result[0])\
 				(Balance.objects.raw({"_id": decodeKey(currentKey(name))}))
 
-		def historyBalances():
-			pass
-
-		def loadAllBalancesFileName():
-			pass
 
 		def getFileNameParts(fileName):
 			def processName(exp):
 				if not re.search(exp, fileName):
 					raise Error("invalid file name:%s" % fileName)
 				
-		def getNumberOfFileName(fileName):
-			pass
-
-		def getDateOfFileName(fileName):
-			pass
-
 		def addIncome(balance, incomeDict):
 			balance.incomes.append(Income(income = incomeDict["income"], \
 				desc = incomeDict["desc"], \
@@ -113,12 +102,20 @@ class BudgetManagement:
 			balance.budgets.append(Budget(\
 				account = budgetDict["account"], \
 				amount = budgetDict["amount"]))
+
+		def toJson(balance):
+			return {
+			"incomes": balance.incomes | select(lambda n:{"income": n.income, "desc": n.desc, "date": n.date, "title": n.title}) | as_list(),
+			"consumptions": balance.consumptions | select(lambda n: {"consumption": n.consumption, "account": n.account, "date": n.date, "desc": n.desc}) | as_list(),
+			"budgets": balance.budgets | select(lambda n: {"account": n.account, "amount": n.amount}) | as_list()
+			}
+
 		self.newBalance = newBalance
 		self.currentBalance = currentBalance
-		self.historyBalances = historyBalances
 		self.currentKey = currentKey
 		self.setCurrentKey = setCurrentKey
 		self.increaseKey = increaseKey
 		self.addIncome = addIncome
 		self.addConsumption = addConsumption
 		self.addBudget = addBudget
+		self.toJson = toJson
