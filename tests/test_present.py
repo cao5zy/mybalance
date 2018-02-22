@@ -37,3 +37,25 @@ def test_genBudgetListMulti():
 	assert_that(result).is_length(2)
 	assert_that(result).contains({"account": "play", "amount": 70})
 	assert_that(result).contains({"account": "other", "amount": 50})
+
+def test_genConsumptionList():
+	from present import genConsumptionList
+
+	lst = [{
+	"account": "play"
+	,"consumption": 30
+	}
+	,{
+	"account": "play"
+	,"consumption": 40
+	}
+	,{
+	"account": "other"
+	,"consumption": 50
+	}]
+
+	result = genConsumptionList(lst)
+	assert_that(result).is_length(2)
+	assert_that(result).contains({"account": "play", "consumption": 70})
+	assert_that(result).contains({"account": "other", "consumption": 50})
+

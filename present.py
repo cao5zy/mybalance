@@ -9,7 +9,12 @@ def genBudgetList(budgets):
 		for key, group in groupby(budgets, lambda n:n["account"])]
 
 def genConsumptionList(consumptions):
-	pass
+	from itertools import groupby
+
+	return [{"account": key, \
+			"consumption": sum(map(lambda n:n["consumption"], group))} \
+		for key, group in groupby(consumptions, lambda n:n["account"])]
+
 def genResultList(budgets, consumptions):
 	pass
 def printResult(resultList):
