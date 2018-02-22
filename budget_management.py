@@ -2,7 +2,7 @@ import os
 import itertools
 from pymongo import MongoClient
 from datetime import date
-
+from pipe import *
 # schema defintion
 
 
