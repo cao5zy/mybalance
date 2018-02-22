@@ -32,7 +32,7 @@ class BudgetManagement:
 		class Balance(MongoModel):
 			incomes = fields.EmbeddedDocumentListField(Income)
 			consumptions = fields.EmbeddedDocumentListField(Consumption)
-			bugdets = fields.EmbeddedDocumentListField(Budget)
+			budgets = fields.EmbeddedDocumentListField(Budget)
 			key = fields.CharField(min_length = 1, max_length = 50, primary_key = True, required = True)
 
 		class Key(MongoModel):
@@ -56,17 +56,11 @@ class BudgetManagement:
 				"name": keyObj["name"],
 				"order": keyObj["order"] + 1
 			}
-
-		def currentBalance():
-			pass
-
-		def currentBalance():
-			pass
 		
 		def decodeKey(keyObj):
 			return "{name}-{order}".format(name = keyObj["name"], order = keyObj["order"])
 
-		def newBalance():
+		def newBalance(name = "default"):
 			import datetime
 			Balance(incomes = [Income(income = 0, \
 					desc = 'default', \
@@ -76,15 +70,14 @@ class BudgetManagement:
 					account = "None", \
 					date = datetime.datetime.now(), \
 					desc = "NA")], \
-				bugdets = [Budget(account = "None", \
+				budgets = [Budget(account = "None", \
 					amount = 0)], \
-				key = decodeKey(setCurrentKey(increaseKey(currentKey())))\
+				key = decodeKey(setCurrentKey(increaseKey(currentKey(name))))\
 				).save()
 
-		def currentBalance():
-			print(loadAllBalancesFileName())
-			# if the folder is empty, return None
-			pass
+		def currentBalance(name = "default"):
+			return (lambda result:None if result.count() == 0 else result[0])\
+				(Balance.objects.raw({"_id": decodeKey(currentKey(name))}))
 
 		def historyBalances():
 			pass
@@ -103,9 +96,15 @@ class BudgetManagement:
 		def getDateOfFileName(fileName):
 			pass
 
+		def addIncome(balance, incomeDict):
+			balance.incomes.append(Income(income = incomeDict["income"], \
+				desc = incomeDict["desc"], \
+				date = incomeDict["date"], \
+				title = incomeDict["title"]))
 		self.newBalance = newBalance
 		self.currentBalance = currentBalance
 		self.historyBalances = historyBalances
 		self.currentKey = currentKey
 		self.setCurrentKey = setCurrentKey
 		self.increaseKey = increaseKey
+		self.addIncome = addIncome
