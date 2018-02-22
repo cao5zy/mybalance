@@ -46,22 +46,40 @@ class BudgetManagement:
 				"order": (lambda result: 0 if result.count() == 0 else result[0].order)(Key.objects.raw({"_id": name}))
 			}
 
-		def setCurrentKey(newValue, name = "default"):
-			Key(name = name, order = newValue).save()
+		def setCurrentKey(keyObj):
+			Key(name = keyObj["name"], order = keyObj["order"]).save()
 
-			return currentKey(name)
+			return currentKey(keyObj["name"])
+
+		def increaseKey(keyObj):
+			return {
+				"name": keyObj["name"],
+				"order": keyObj["order"] + 1
+			}
 
 		def currentBalance():
 			pass
 
 		def currentBalance():
 			pass
+		
+		def decodeKey(keyObj):
+			return "{name}-{order}".format(name = keyObj["name"], order = keyObj["order"])
 
 		def newBalance():
-			#db["Balances"].insert_many([{"number": 1, "data": {"bds":[{"name": "KFC"}]}}])
-
-			# generate a new balance with name number-date.json
-			pass
+			import datetime
+			Balance(incomes = [Income(income = 0, \
+					desc = 'default', \
+					date = datetime.datetime.now(), \
+					title = "income")], \
+				consumptions = [Consumption(consumption = 0, \
+					account = "None", \
+					date = datetime.datetime.now(), \
+					desc = "NA")], \
+				bugdets = [Budget(account = "None", \
+					amount = 0)], \
+				key = decodeKey(setCurrentKey(increaseKey(currentKey())))\
+				).save()
 
 		def currentBalance():
 			print(loadAllBalancesFileName())
@@ -90,3 +108,4 @@ class BudgetManagement:
 		self.historyBalances = historyBalances
 		self.currentKey = currentKey
 		self.setCurrentKey = setCurrentKey
+		self.increaseKey = increaseKey

@@ -10,4 +10,4 @@ def test_currentKey():
 
 	result = budgetManagement.currentKey()
 
-	assert_that(budgetManagement.setCurrentKey(result["order"] + 1)["order"]).is_equal_to(result["order"] + 1)
+	assert_that(budgetManagement.setCurrentKey(budgetManagement.increaseKey(result))["order"]).is_equal_to(result["order"] + 1)
