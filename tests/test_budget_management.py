@@ -17,10 +17,23 @@ def test_currentBudget():
 			"date": datetime.datetime.now(),
 			"title": "salary"
 			})
+		budgetManagement.addConsumption(currentBalance, {
+			"consumption": 50,
+			"account": "play",
+			"date": datetime.datetime.now(),
+			"desc": "play"
+			})
+		budgetManagement.addBudget(currentBalance, {
+			"account": "play",
+			"amount": 1200
+			})
+
 		currentBalance.save()
 
 		currentBalance = budgetManagement.currentBalance()
 		assert_that(currentBalance.incomes).is_length(2)
+		assert_that(currentBalance.consumptions).is_length(2)
+		assert_that(currentBalance.budgets).is_length(2)
 
 def test_currentKey():
 	budgetManagement = BudgetManagement()

@@ -101,6 +101,18 @@ class BudgetManagement:
 				desc = incomeDict["desc"], \
 				date = incomeDict["date"], \
 				title = incomeDict["title"]))
+
+		def addConsumption(balance, consumptionDict):
+			balance.consumptions.append(Consumption(\
+				consumption = consumptionDict["consumption"], \
+				account = consumptionDict["account"], \
+				date = consumptionDict["date"], \
+				desc = consumptionDict["desc"]))
+
+		def addBudget(balance, budgetDict):
+			balance.budgets.append(Budget(\
+				account = budgetDict["account"], \
+				amount = budgetDict["amount"]))
 		self.newBalance = newBalance
 		self.currentBalance = currentBalance
 		self.historyBalances = historyBalances
@@ -108,3 +120,5 @@ class BudgetManagement:
 		self.setCurrentKey = setCurrentKey
 		self.increaseKey = increaseKey
 		self.addIncome = addIncome
+		self.addConsumption = addConsumption
+		self.addBudget = addBudget
