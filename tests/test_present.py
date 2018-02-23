@@ -94,3 +94,8 @@ def test_genResultList_empty():
 	assert_that(result).is_length(2)
 	assert_that(result).contains({"account": "play", "amount": 20})
 	assert_that(result).contains({"account": "other", "amount": -10})
+
+def test_printResult():
+	from present import printResult
+
+	printResult([{"account": "play", "amount": 30}])

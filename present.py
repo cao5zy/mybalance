@@ -29,7 +29,11 @@ def genResultList(budgets, consumptions):
 		"amount": - n["consumption"]} for n in consumptions])
 
 def printResult(resultList):
-	pass
+	from jinja2 import Template
+	print(Template('''budgets remaining
+budget\t\tremaining
+{% for n in lst %}{{n.account}}\t\t{{n.amount}}
+{% endfor %}''').render(lst = resultList))
 def showBudgetRemaining(balance):
 	printResult(\
 		genResultList(\
