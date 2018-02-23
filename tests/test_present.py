@@ -59,3 +59,38 @@ def test_genConsumptionList():
 	assert_that(result).contains({"account": "play", "consumption": 70})
 	assert_that(result).contains({"account": "other", "consumption": 50})
 
+def test_genResultList_empty():
+	from present import genResultList
+
+	budgets = []
+	consumptions = []
+
+	result = genResultList(budgets, consumptions)
+
+	assert_that(result).is_length(0)
+
+def test_genResultList_empty():
+	from present import genResultList
+
+	budgets = [{
+		"account": "play"
+		,"amount": 50
+	}
+	,{
+		"account": "other"
+		,"amount": 60
+	}]
+	consumptions = [{
+		"account": "play"
+		,"consumption": 30
+	}
+	,{
+		"account": "other"
+		,"consumption": 70
+	}]
+
+	result = genResultList(budgets, consumptions)
+
+	assert_that(result).is_length(2)
+	assert_that(result).contains({"account": "play", "amount": 20})
+	assert_that(result).contains({"account": "other", "amount": -10})

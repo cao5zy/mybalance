@@ -1,4 +1,4 @@
-
+from pipe import *
 
 def genBudgetList(budgets):
 	from itertools import groupby
@@ -6,17 +6,28 @@ def genBudgetList(budgets):
 	return [{"account": key, \
 			"amount": sum(map(lambda n:n["amount"], group))
 			} \
-		for key, group in groupby(budgets, lambda n:n["account"])]
+		for key, group in groupby(sorted(budgets, key = lambda n:n["account"]), lambda n:n["account"])]
 
 def genConsumptionList(consumptions):
 	from itertools import groupby
 
 	return [{"account": key, \
 			"consumption": sum(map(lambda n:n["consumption"], group))} \
-		for key, group in groupby(consumptions, lambda n:n["account"])]
+		for key, group in groupby(sorted(consumptions, key = lambda n:n["account"]), lambda n:n["account"])]
 
 def genResultList(budgets, consumptions):
-	pass
+	def cal(lst):
+		from itertools import groupby
+		return [{"account": key, \
+			"amount": sum(map(lambda n:n["amount"], group))
+			} \
+			for key, group in groupby(sorted(lst, key=lambda n:n["account"]), lambda x:x["account"])]
+
+	return cal([{"account": n["account"], \
+		"amount": n["amount"]} for n in budgets] \
+		+ [{"account": n["account"], \
+		"amount": - n["consumption"]} for n in consumptions])
+
 def printResult(resultList):
 	pass
 def showBudgetRemaining(balance):
