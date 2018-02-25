@@ -1,6 +1,10 @@
 import sys
 import datetime
 from budget_management import BudgetManagement
+import logging
+
+logging.basicConfig(stream = sys.stdout, level = 'DEBUG')
+logger = logging.getLogger(__name__)
 
 def get_budget_param():
     return {
@@ -23,7 +27,8 @@ def get_income_param():
     }
 
 def get_action():
-    return sys.argv[2]
+    logging.debug({"argv": sys.argv})
+    return sys.argv[1]
 
 def create_budget_management():
     return BudgetManagement("balance")
@@ -60,7 +65,7 @@ def show_budget_remaining():
 
 def main():
     def process(action):
-        (lambda actionDic: actionDic[(action if action in actionDic else "error_cmd").lower()]())\
+        (lambda actionDic: actionDic[(action if action in actionDic else "errorcmd").lower()]())\
         ({
             "addbudget": add_budget,
             "addconsumption": add_consumption,
@@ -73,4 +78,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    
