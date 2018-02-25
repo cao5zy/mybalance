@@ -16,7 +16,7 @@ def get_consumption_param():
     return {
         "account": sys.argv[2],
         "consumption": sys.argv[3],
-        "desc": "" if len(sys.argv) == 4 else sys.argv[4]
+        "desc": "None" if len(sys.argv) == 4 else sys.argv[4]
     }
 
 def get_income_param():
