@@ -8,7 +8,7 @@ from pipe import *
 
 
 
-logger = logging.getLogger(__name__)
+LOGGER = logging.getLogger(__name__)
 
 class BudgetManagement:
 	def __init__(self, dbname = "testdb"):
@@ -93,6 +93,7 @@ class BudgetManagement:
 					raise Error("invalid file name:%s" % fileName)
 				
 		def addIncome(balance, incomeDict):
+			LOGGER.debug({"addIncome": incomeDict})
 			balance.incomes.append(Income(income = incomeDict["income"], \
 				desc = incomeDict["desc"], \
 				date = incomeDict["date"], \
@@ -106,7 +107,7 @@ class BudgetManagement:
 				desc = consumptionDict["desc"]))
 
 		def addBudget(balance, budgetDict):
-			logger.debug({"addBudget": budgetDict})
+			LOGGER.debug({"addBudget": budgetDict})
 			balance.budgets.append(Budget(\
 				account = budgetDict["account"], \
 				amount = budgetDict["amount"]))

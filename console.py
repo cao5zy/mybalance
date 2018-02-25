@@ -23,7 +23,7 @@ def get_income_param():
     return {
         "title": sys.argv[2],
         "income": sys.argv[3],
-        "desc": "" if len(sys.argv) == 4 else sys.argv[4]
+        "desc": "None" if len(sys.argv) == 4 else sys.argv[4]
     }
 
 def get_action():
@@ -47,7 +47,8 @@ def add_consumption():
     def add(budget_management):
         def save(balance):
             budget_management.addConsumption(balance, \
-                get_consumption_param().update({"date": datetime.datetime.now()}))
+                dict(get_consumption_param(), **{"date": datetime.datetime.now()}))
+            balance.save()
 
         save(budget_management.currentBalance())
 
@@ -57,7 +58,8 @@ def add_income():
     def add(budget_management):
         def save(balance):
             budget_management.addIncome(balance, \
-                get_income_param().update({"date": datetime.datetime.now()}))
+                dict(get_income_param(), **{"date": datetime.datetime.now()}))
+            balance.save()
 
         save(budget_management.currentBalance())
 
