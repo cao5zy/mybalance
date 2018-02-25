@@ -36,32 +36,32 @@ def create_budget_management():
 def add_budget():
     def add(budget_management):
         def save(balance):
-            budget_management.addBudget(balance, get_budget_param())
+            budget_management.add_budget(balance, get_budget_param())
             balance.save()
 
-        save(budget_management.currentBalance())
+        save(budget_management.current_balance())
 
     add(create_budget_management())
 
 def add_consumption():
     def add(budget_management):
         def save(balance):
-            budget_management.addConsumption(balance, \
+            budget_management.add_consumption(balance, \
                 dict(get_consumption_param(), **{"date": datetime.datetime.now()}))
             balance.save()
 
-        save(budget_management.currentBalance())
+        save(budget_management.current_balance())
 
     add(create_budget_management())
 
 def add_income():
     def add(budget_management):
         def save(balance):
-            budget_management.addIncome(balance, \
+            budget_management.add_income(balance, \
                 dict(get_income_param(), **{"date": datetime.datetime.now()}))
             balance.save()
 
-        save(budget_management.currentBalance())
+        save(budget_management.current_balance())
 
     add(create_budget_management())
 
@@ -71,7 +71,7 @@ def error_cmd():
 def show_budget_remaining():
     import present
     def show(budget_management):
-        present.showBudgetRemaining(budget_management.toJson(budget_management.currentBalance()))
+        present.showBudgetRemaining(budget_management.to_json(budget_management.current_balance()))
 
     show(create_budget_management())
 
