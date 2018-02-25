@@ -1,10 +1,10 @@
 import sys
 import datetime
-from budget_management import BudgetManagement
 import logging
+from budget_management import BudgetManagement
 
-logging.basicConfig(stream = sys.stdout, level = 'DEBUG')
-logger = logging.getLogger(__name__)
+logging.basicConfig(stream=sys.stdout, level='DEBUG')
+LOGGER = logging.getLogger(__name__)
 
 def get_budget_param():
     return {
@@ -27,7 +27,7 @@ def get_income_param():
     }
 
 def get_action():
-    logging.debug({"argv": sys.argv})
+    LOGGER.debug({"argv": sys.argv})
     return sys.argv[1]
 
 def create_budget_management():
@@ -35,23 +35,33 @@ def create_budget_management():
 
 def add_budget():
     def add(budget_management):
-        budget_management.add_budget(budget_management.currentBalance(), get_budget_param())
+        def save(balance):
+            budget_management.addBudget(balance, get_budget_param())
+            balance.save()
 
-    add(BudgetManagement())
+        save(budget_management.currentBalance())
+
+    add(create_budget_management())
 
 def add_consumption():
     def add(budget_management):
-        budget_management.add_consumption(budget_management.currentBalance(), \
-            get_consumption_param().update({"date": datetime.datetime.now()}))
+        def save(balance):
+            budget_management.addConsumption(balance, \
+                get_consumption_param().update({"date": datetime.datetime.now()}))
 
-    add(BudgetManagement())
+        save(budget_management.currentBalance())
+
+    add(create_budget_management())
 
 def add_income():
     def add(budget_management):
-        budget_management.add_income(budget_management.currentBalance(), \
-            get_income_param().update({"date": datetime.datetime.now()}))
+        def save(balance):
+            budget_management.addIncome(balance, \
+                get_income_param().update({"date": datetime.datetime.now()}))
 
-    add(BudgetManagement())
+        save(budget_management.currentBalance())
+
+    add(create_budget_management())
 
 def error_cmd():
     print("error command")
@@ -61,7 +71,7 @@ def show_budget_remaining():
     def show(budget_management):
         present.showBudgetRemaining(budget_management.toJson(budget_management.currentBalance()))
 
-    show(BudgetManagement())
+    show(create_budget_management())
 
 def main():
     def process(action):

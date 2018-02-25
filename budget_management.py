@@ -1,4 +1,5 @@
 import os
+import logging
 import itertools
 from pymongo import MongoClient
 from datetime import date
@@ -7,6 +8,7 @@ from pipe import *
 
 
 
+logger = logging.getLogger(__name__)
 
 class BudgetManagement:
 	def __init__(self, dbname = "testdb"):
@@ -104,6 +106,7 @@ class BudgetManagement:
 				desc = consumptionDict["desc"]))
 
 		def addBudget(balance, budgetDict):
+			logger.debug({"addBudget": budgetDict})
 			balance.budgets.append(Budget(\
 				account = budgetDict["account"], \
 				amount = budgetDict["amount"]))
