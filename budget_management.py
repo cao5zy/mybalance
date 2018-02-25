@@ -9,9 +9,9 @@ from pipe import *
 
 
 class BudgetManagement:
-	def __init__(self):
+	def __init__(self, dbname = "testdb"):
 		from pymodm import connect, MongoModel, fields
-		connect('mongodb://localhost:27017/testdb')
+		connect('mongodb://localhost:27017/%s' % dbname)
 
 		class Income(MongoModel):
 			income = fields.FloatField()
@@ -62,7 +62,11 @@ class BudgetManagement:
 
 		def newBalance(name = "default"):
 			import datetime
-			Balance(incomes = [Income(income = 0, \
+			def new(balance):
+				balance.save()
+				return balance
+
+			return new(Balance(incomes = [Income(income = 0, \
 					desc = 'default', \
 					date = datetime.datetime.now(), \
 					title = "income")], \
@@ -73,10 +77,11 @@ class BudgetManagement:
 				budgets = [Budget(account = "None", \
 					amount = 0)], \
 				key = decodeKey(setCurrentKey(increaseKey(currentKey(name))))\
-				).save()
+				))
+
 
 		def currentBalance(name = "default"):
-			return (lambda result:None if result.count() == 0 else result[0])\
+			return (lambda result:newBalance(name) if result.count() == 0 else result[0])\
 				(Balance.objects.raw({"_id": decodeKey(currentKey(name))}))
 
 
